@@ -35,10 +35,10 @@ def update_board(player_game_board, hidden_game_board, target_cell):
     
     if str(hidden_game_board[target_cell[0], target_cell[1]]) == ' ':
         player_game_board[target_cell[0], target_cell[1]] = EMPTY_TILE
-        print("Miss!")
+        print("MISS!")
     else:
         player_game_board[target_cell[0], target_cell[1]] = SQUID_TILE
-        print("Hit!")
+        print("HIT!")
 
 
 # Update the boolean value for a squid cell when the player hits
@@ -102,7 +102,7 @@ def game_loop():
             print(hidden_game_board, '\n')
             print("Argg, plunder ye! Ya lose!", '\n')
             print("You used: ", cannonballs, " out of ", starting_cannonballs, " cannonballs")
-            print("You got: ", squids_killed, " out of ", num_squids, " squids")
+            print("You got: ", len(squids_killed), " out of ", num_squids, " squids")
             break
 
         
