@@ -75,7 +75,7 @@ def game_loop():
     starting_cannonballs = 24
     cannonballs = 24
 
-    print(hidden_game_board)
+    #print(hidden_game_board)
 
     while True:
         print("Squids Killed: ", len(squids_killed))
