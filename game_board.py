@@ -37,31 +37,33 @@ def get_random_coordinate2():
 
 def get_random_direction():
     return(np.random.randint(0, high=4))
-  
-def generate_squid(game_board, squid_length):
+
+def generate_squid(game_board, squid_length, squid_array):
     # Get random coordinate and coordinate to draw squid
     collision = False
     coord = get_random_coordinate()
     direction = get_random_direction() # 0 = Down, 1 = Left, 2 = Up, 3 = Right
-    
+    debug = False
     
     # Validate squid can be drawn for all direcions and does not collide with existing squid. Recall function if squid cannot be drawn at coordinate
     if direction == 0:
         if coord[0] - 1 + squid_length <= 7:
             for i in range(squid_length):
                 if game_board[coord[0] + i, coord[1]] != ' ':
-                    #print("squid collision", '\n')
                     collision = True
 
             if collision == False:
-                print(coord, 'down', '\n')
+                squid = []
+                if debug:
+                    print(coord, 'down', '\n')
                 for i in range(squid_length):
                     game_board[coord[0] + i, coord[1]] = 'V'
-                    #print('drawing DOWN squid of length:', str(squid_length), '\n')
+                    squid.append([[coord[0] + i, coord[1]], False])  
+                squid_array.append(squid)
             else:
-                generate_squid(game_board, squid_length)     
+                generate_squid(game_board, squid_length, squid_array)     
         else:
-            generate_squid(game_board, squid_length)
+            generate_squid(game_board, squid_length, squid_array)
     
 
 
@@ -69,18 +71,20 @@ def generate_squid(game_board, squid_length):
         if coord[1] + 1 - squid_length >= 0:
             for i in range(squid_length):
                 if game_board[coord[0], coord[1] - i] != ' ':
-                    #print("squid collision", '\n')
                     collision = True
 
             if collision == False:
-                print(coord, 'left', '\n')
+                squid = []
+                if debug:
+                    print(coord, 'left', '\n')
                 for i in range(squid_length):
                     game_board[coord[0], coord[1] - i] = '<'
-                    #print('drawing LEFT squid of length:', str(squid_length), '\n')
+                    squid.append([[coord[0], coord[1] - i], False])
+                squid_array.append(squid)
             else:
-                generate_squid(game_board, squid_length) 
+                generate_squid(game_board, squid_length, squid_array) 
         else:
-            generate_squid(game_board, squid_length)
+            generate_squid(game_board, squid_length, squid_array)
     
 
 
@@ -88,18 +92,20 @@ def generate_squid(game_board, squid_length):
         if coord[0] + 1 - squid_length >= 0:
             for i in range(squid_length):
                 if game_board[coord[0] - i, coord[1]] != ' ':
-                    #print("squid collision", '\n')
                     collision = True
 
             if collision == False:
-                print(coord, 'up', '\n')
+                squid = []
+                if debug:
+                    print(coord, 'up', '\n')
                 for i in range(squid_length):
                     game_board[coord[0] - i, coord[1]] = '^'
-                    #print('drawing UP squid of length:', str(squid_length), '\n')
+                    squid.append([[coord[0] - i, coord[1]], False])
+                squid_array.append(squid)
             else:
-                generate_squid(game_board, squid_length) 
+                generate_squid(game_board, squid_length, squid_array) 
         else:
-            generate_squid(game_board, squid_length)
+            generate_squid(game_board, squid_length, squid_array)
     
 
 
@@ -107,31 +113,31 @@ def generate_squid(game_board, squid_length):
         if coord[1] - 1 + squid_length <= 7:
             for i in range(squid_length):
                 if game_board[coord[0], coord[1] + i] != ' ':
-                    #print("squid collision", '\n')
                     collision = True
             
             if collision == False:
-                print(coord, 'right', '\n')
+                squid = []
+                if debug:
+                    print(coord, 'right', '\n')
                 for i in range(squid_length):
                     game_board[coord[0], coord[1] + i] = '>'
-                    #print('drawing RIGHT squid of length:', str(squid_length), '\n')
+                    squid.append([[coord[0], coord[1] + i], False])
+                squid_array.append(squid)
             else:
-                generate_squid(game_board, squid_length) 
+                generate_squid(game_board, squid_length, squid_array) 
         else:
-            generate_squid(game_board, squid_length)  
+            generate_squid(game_board, squid_length, squid_array)  
     
     return game_board
 
 def generate_game_board(num_squids):
     # Generate empty game board; fill with 'O's
     game_board = np.full((8,8), fill_value=' ', dtype=str)
-
+    squid_array = []
     for i in range(num_squids):
-        generate_squid(game_board, i + 2)
-    return game_board
+        generate_squid(game_board, i + 2, squid_array)
+    return (game_board, squid_array)
 
-game_board = generate_game_board(3)
-print(game_board)
 
 # board = np.full((8,8), fill_value='o', dtype=str)
 # board = generate_squid(board, 2)
@@ -139,7 +145,10 @@ print(game_board)
 # board = generate_squid(board, 3)
 # print(board)
 
-
+# game = generate_game_board(3)
+# print(game[0], '\n', game[1])
+# squid_array = game[1]
+# print(squid_array[2])
 
 
 
