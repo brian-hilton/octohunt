@@ -95,13 +95,13 @@ def game_loop():
         if len(squids_killed) == num_squids:
             print(hidden_game_board, '\n')
             print("Nice huntin' chub, ya win!", '\n')
-            print("You used:", cannonballs, " out of 24 cannonballs")
+            print("You used:", starting_cannonballs - cannonballs, " out of 24 cannonballs")
             break
 
         if cannonballs == 0:
             print(hidden_game_board, '\n')
             print("Argg, plunder ye! Ya lose!", '\n')
-            print("You used: ", cannonballs, " out of ", starting_cannonballs, " cannonballs")
+            print("You used: ", starting_cannonballs - cannonballs, " out of ", starting_cannonballs, " cannonballs")
             print("You got: ", len(squids_killed), " out of ", num_squids, " squids")
             break
 
