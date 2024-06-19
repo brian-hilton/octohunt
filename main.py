@@ -40,6 +40,7 @@ def update_board(player_game_board, hidden_game_board, target_cell):
         player_game_board[target_cell[0], target_cell[1]] = SQUID_TILE
         print("Hit!")
 
+
 # Update the boolean value for a squid cell when the player hits
 def update_squid_array(target_cell, squid_array, squids_killed):
     for squid in squid_array:
@@ -47,15 +48,14 @@ def update_squid_array(target_cell, squid_array, squids_killed):
             if cell[0] == target_cell:
                 cell[1] = True
                 if check_kill(squid) == True:
-                    return squids_killed + 1
-                else: 
-                    return squids_killed
+                    squids_killed.append(1)
 
 # Check each boolean value in each squid cell to see if hes dead
 def check_kill(squid):
     for cell in squid:
         if cell[1] == False:
             return False
+    print("Killed squid of size:", len(squid))
     return True
 
 def fix_row_one(pb):
@@ -71,14 +71,14 @@ def game_loop():
     hidden_game_board = game_board[0]    
     player_game_board = np.arange(1, 65).reshape((8,8)).astype(str)
     player_game_board = fix_row_one(player_game_board)
-    squids_killed = 0
+    squids_killed = []
     starting_cannonballs = 24
     cannonballs = 24
-    
+
     print(hidden_game_board)
 
     while True:
-        print("Squids Killed: ", squids_killed)
+        print("Squids Killed: ", len(squids_killed))
         print("Cannonballs Remaining: ", cannonballs, '\n')
         print(player_game_board, '\n')
 
@@ -88,14 +88,14 @@ def game_loop():
         print('\n', '\n')
 
         update_board(player_game_board, hidden_game_board, target_cell)
-        squids_killed = update_squid_array(target_cell, squid_array, squids_killed)
+        update_squid_array(target_cell, squid_array, squids_killed)
 
         print('\n')
 
-        if squids_killed == num_squids:
+        if len(squids_killed) == num_squids:
             print(hidden_game_board, '\n')
             print("Nice huntin' chub, ya win!", '\n')
-            print("You used: ", cannonballs, " out of 24")
+            print("You used:", cannonballs, " out of 24 cannonballs")
             break
 
         if cannonballs == 0:
